@@ -1,13 +1,7 @@
-use std::{env, error::Error};
-use aurca::components::help;
+use aurca::{internal::parser};
+use std::{error};
 
-fn main() -> Result<(), Box<dyn Error>> {
-    let args: Vec<String> = env::args().collect();
-    
-    if args.len() == 1 {
-        println!("{}", help::generate()?);        
-        return Ok(());
-    }
-    
+fn main() -> Result<(), Box<dyn error::Error>> {
+    parser::parse_args()?;
     Ok(())
 }

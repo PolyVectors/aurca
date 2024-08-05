@@ -43,7 +43,8 @@ pub fn parse_args() -> Result<(), Box<dyn error::Error>> {
             (_, false, true, _) => logger::error(format!("duplicate option '{}'", &arg), 1),
             (_, true, _, true) => logger::error(format!("duplicate command '{}'", &arg), 1),
             (true, _, _, true) => logger::error("option specified after command".to_owned(), 1),
-            _ => {}
+            (true, _, _, _) => specified_options.push(arg.clone()),
+            (_, true, _, _) => specified_command = Some(arg.clone()),
         };
     }
 

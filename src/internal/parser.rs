@@ -1,4 +1,4 @@
-use crate::{parameters::help, internal::parameter::{Parameter, ParameterType, OPTIONS, COMMANDS}};
+use crate::{parameters::help, internal::{logger, parameter::{Parameter, ParameterType, OPTIONS, COMMANDS}}};
 use std::{env, error, process};
 
 fn get_parameters<'a>(array: &[&Parameter]) -> Result<Vec<String>, Box<dyn error::Error>> {    
@@ -35,25 +35,16 @@ pub fn parse_args() -> Result<(), Box<dyn error::Error>> {
     let mut specified_command: Option<String> = None;
 
     for arg in args.into_iter().skip(1) {
-        // todo: make this cleaner (match with tuple?)
-        if !options.contains(&arg) && !commands.contains(&arg) {
-            // make dedicated logging function
-            println!("Unknown argument '{}', try aurca -h for help.", &arg);
-            process::exit(1);
-        } else if specified_options.contains(&arg) && !commands.contains(&arg) {
-            println!("Options cannot be specified more than once, try aurca -h for help.");
-            process::exit(1);
-        } else if specified_command.is_some() && commands.contains(&arg) {
-            println!("Commands cannot be specified more than once, try aurca -h for help.");
-            process::exit(1);
-        } else if options.contains(&arg) && specified_command.is_some() {
-            println!("Cannot specify option after command, try aurca -h for help.");
-            process::exit(1);
-        } else if options.contains(&arg) && !commands.contains(&arg) {
-            specified_options.push(arg.clone());
-        } else if commands.contains(&arg) && !options.contains(&arg) {
-            specified_command = Some(arg.clone());
-        }
+        match (
+            options.contains(&arg), commands.contains(&arg),
+            specified_options.contains(&arg), specified_command.is_some()
+        ) {
+            (false, false, _, _) => logger::error(format!("unexpected argument '{}'", &arg), 1),
+            (_, false, true, _) => logger::error(format!("duplicate option '{}'", &arg), 1),
+            (_, true, _, true) => logger::error(format!("duplicate command '{}'", &arg), 1),
+            (true, _, _, true) => logger::error("option specified after command".to_owned(), 1),
+            _ => {}
+        };
     }
 
     if specified_options.len() == 0 && specified_command.is_none() {

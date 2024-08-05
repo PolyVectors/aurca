@@ -1,4 +1,5 @@
 pub mod internal {
+    pub mod logger;
     pub mod parameter;
     pub mod parser;
 }

@@ -6,4 +6,5 @@ pub mod internal {
 
 pub mod parameters {
     pub mod help;
+    pub mod search;
 }

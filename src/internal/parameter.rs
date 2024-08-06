@@ -56,9 +56,9 @@ pub const OPTIONS: &[&Parameter] = &[
 
 pub const COMMANDS: &[&Parameter] = &[
     &Parameter::new(
-        "query",
-        "q",
-        "Query the package database",
+        "search",
+        "s",
+        "Search the package database",
         ParameterType::Command,
     ),
     &Parameter::new(

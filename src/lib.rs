@@ -1,8 +1,12 @@
-pub mod internal {
+pub mod core {
     pub mod log;
-    pub mod parameter;
     pub mod parser;
-    pub mod search_response;
+
+    pub mod definitions {
+        pub mod cli;
+        pub mod parameter;
+        pub mod search_response;
+    }
 }
 
 pub mod parameters {

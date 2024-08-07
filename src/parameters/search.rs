@@ -1,4 +1,4 @@
-use crate::internal::{log, search_response::SearchResponse};
+use crate::core::{definitions::search_response::SearchResponse, log};
 use isahc::prelude::*;
 
 use std::{

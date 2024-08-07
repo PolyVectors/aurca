@@ -7,7 +7,7 @@ edition = "2021"
 description = "Killer AUR helper"
 homepage = "https://github.com/PolyVectors/aurca"
 repository = "https://github.com/PolyVectors/aurca"
-documentation = "aurca.peez.us/docs"
+documentation = "https://aurca.peez.us/docs"
 license = "MIT"
 
 [dependencies]

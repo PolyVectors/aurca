@@ -1,4 +1,7 @@
-use crate::internal::parameter::{Parameter, ParameterType, COMMANDS, OPTIONS};
+use crate::core::definitions::{
+    cli::{COMMANDS, OPTIONS},
+    parameter::{Parameter, ParameterType},
+};
 use std::error;
 
 const DESCRIPTION: &'static str = env!("CARGO_PKG_DESCRIPTION");

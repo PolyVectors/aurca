@@ -1,31 +1,4 @@
-pub struct Parameter<'a> {
-    pub name: &'a str,
-    pub alias: &'a str,
-    pub description: &'a str,
-    pub variant: ParameterType,
-}
-
-impl<'a> Parameter<'a> {
-    pub const fn new(
-        name: &'a str,
-        alias: &'a str,
-        description: &'a str,
-        variant: ParameterType,
-    ) -> Self {
-        Self {
-            name,
-            alias,
-            description,
-            variant,
-        }
-    }
-}
-
-#[derive(PartialEq)]
-pub enum ParameterType {
-    Option,
-    Command,
-}
+use crate::core::definitions::parameter::{Parameter, ParameterType};
 
 pub const OPTIONS: &[&Parameter] = &[
     &Parameter::new(
@@ -63,7 +36,7 @@ pub const OPTIONS: &[&Parameter] = &[
 pub const COMMANDS: &[&Parameter] = &[
     &Parameter::new(
         "search",
-        "s",
+        "sr",
         "Search the package database",
         ParameterType::Command,
     ),

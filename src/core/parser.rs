@@ -1,7 +1,8 @@
 use crate::{
-    internal::{
+    core::{
+        definitions::cli::{COMMANDS, OPTIONS},
+        definitions::parameter::{Parameter, ParameterType},
         log,
-        parameter::{Parameter, ParameterType, COMMANDS, OPTIONS},
     },
     parameters::{help, search, version},
 };

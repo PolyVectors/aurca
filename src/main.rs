@@ -1,4 +1,4 @@
-use aurca::internal::parser;
+use aurca::core::parser;
 use std::error;
 
 fn main() -> Result<(), Box<dyn error::Error>> {

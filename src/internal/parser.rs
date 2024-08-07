@@ -1,7 +1,13 @@
-use crate::{parameters::{help, search}, internal::{logger, parameter::{Parameter, ParameterType, OPTIONS, COMMANDS}}};
+use crate::{
+    internal::{
+        log,
+        parameter::{Parameter, ParameterType, COMMANDS, OPTIONS},
+    },
+    parameters::{help, search, version},
+};
 use std::{env, error, process};
 
-fn get_parameters<'a>(array: &[&Parameter]) -> Result<Vec<String>, Box<dyn error::Error>> {    
+fn get_parameters<'a>(array: &[&Parameter]) -> Result<Vec<String>, Box<dyn error::Error>> {
     let components = array
         .to_vec()
         .iter()
@@ -21,30 +27,32 @@ fn get_parameters<'a>(array: &[&Parameter]) -> Result<Vec<String>, Box<dyn error
         .iter()
         .map(|c| c.to_string())
         .collect();
-       
+
     Ok(components)
 }
 
-pub fn parse_args() -> Result<(), Box<dyn error::Error>> {   
+pub fn parse_args() -> Result<(), Box<dyn error::Error>> {
     let args: Vec<String> = env::args().collect();
-    
+
     let options = get_parameters(OPTIONS)?;
     let commands = get_parameters(COMMANDS)?;
 
     let mut specified_options = Vec::new();
     let mut specified_arguments = Vec::new();
-    
+
     let mut specified_command: Option<String> = None;
 
     for arg in args.into_iter().skip(1) {
         match (
-            options.contains(&arg), commands.contains(&arg),
-            specified_options.contains(&arg), specified_command.is_some()
+            options.contains(&arg),
+            commands.contains(&arg),
+            specified_options.contains(&arg),
+            specified_command.is_some(),
         ) {
-            (false, false, true, _) | (false, false, _, true) => specified_arguments.push(arg.clone()),
-            (false, false, _, _) => logger::error(format!("unexpected argument '{}'", &arg), 1),
-            (_, false, true, _) => logger::error(format!("duplicate option '{}'", &arg), 1),
-            (true, _, _, true) => logger::error("option specified after command".to_owned(), 1),
+            (false, false, false, true) => specified_arguments.push(arg.clone()),
+            (false, false, _, _) => log::error(format!("unexpected argument '{}'", &arg), 1),
+            (_, false, true, _) => log::error(format!("duplicate option '{}'", &arg), 1),
+            (true, _, _, true) => log::error("option specified after command", 1),
             (true, _, _, _) => specified_options.push(arg.clone()),
             (_, true, _, _) => specified_command = Some(arg.clone()),
         };
@@ -65,17 +73,23 @@ pub fn parse_args() -> Result<(), Box<dyn error::Error>> {
             "-h" | "--help" => {
                 println!("{}", help::generate(specified_command)?);
                 process::exit(0);
-            },
-            &_ => {},
+            }
+            "-V" | "--version" => {
+                println!("{}", version::get());
+                process::exit(0);
+            }
+            &_ => todo!(),
         }
     }
 
     match specified_command {
         Some(command) => match command.as_str() {
-            "s" | "search" => { search::search(specified_arguments)?; },
-            _ => {},
+            "s" | "search" => {
+                search::search(specified_arguments)?;
+            }
+            _ => {}
         },
-        None => {},
+        None => {}
     }
 
     Ok(())

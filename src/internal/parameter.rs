@@ -48,8 +48,14 @@ pub const OPTIONS: &[&Parameter] = &[
     ),
     &Parameter::new(
         "verbose",
-        "V",
+        "v",
         "Show more install information",
+        ParameterType::Option,
+    ),
+    &Parameter::new(
+        "version",
+        "V",
+        "Display the version number",
         ParameterType::Option,
     ),
 ];

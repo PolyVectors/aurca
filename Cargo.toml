@@ -1,7 +1,14 @@
 [package]
 name = "aurca"
 version = "0.1.0"
+authors = ["peezus"]
 edition = "2021"
+
+description = "Killer AUR helper"
+homepage = "https://github.com/PolyVectors/aurca"
+repository = "https://github.com/PolyVectors/aurca"
+documentation = "aurca.peez.us/docs"
+license = "MIT"
 
 [dependencies]
 isahc = "1.7.2"
